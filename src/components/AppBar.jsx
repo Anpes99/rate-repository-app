@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'center',
     height: 60,
-    backgroundColor: theme.colors.AppBar
+    backgroundColor: theme.colors.AppBar,
   },
   columnA:{
       alignSelf:'flex-start',
