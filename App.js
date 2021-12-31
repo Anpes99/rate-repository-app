@@ -1,15 +1,17 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import RepositoryList from "./src/components/RepositoryList";
-import { repositories } from "./src/utils/data";
 import Main from "./src/components/Main";
+import { NativeRouter } from "react-router-native";
+import AppBar from "./src/components/AppBar";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Main />
-      <RepositoryList repositories={repositories} />
-    </View>
+    <NativeRouter>
+      <View style={styles.container}>
+        <AppBar />
+        <Main />
+      </View>
+    </NativeRouter>
   );
 }
 
@@ -18,6 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "stretch",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
 });
