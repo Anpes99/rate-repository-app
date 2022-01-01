@@ -2,7 +2,6 @@ import React from "react";
 import { View } from "react-native";
 import { Switch, Route, Redirect } from "react-router-native";
 import RepositoryList from "./RepositoryList";
-import { repositories } from "../utils/data";
 import SignIn from "./SignIn";
 
 const Main = ()=>{
@@ -16,7 +15,7 @@ const Main = ()=>{
         <SignIn/>
         </Route>
         <Route path="/" exact>
-        <RepositoryList repositories={repositories} />		
+        <RepositoryList  />		
         </Route>
         <Redirect to="/" />
       </Switch>
