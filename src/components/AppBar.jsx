@@ -34,7 +34,7 @@ const LinkTab = ({toDest, linkText})=><View style={styles.columnA} >
   
 
 const AppBar = () => {
-  const  result= useQuery(AUTHORIZED_USER)
+  const  result= useQuery(AUTHORIZED_USER);
   
 
   return (

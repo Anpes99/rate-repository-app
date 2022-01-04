@@ -32,43 +32,56 @@ const styles = StyleSheet.create({
     }
   });
 
-const SignInForm = ({ onSubmit }) => {		// 
-    return (
+
+
+
+export const SignInContainer = ({onSubmit})=>{
+  
+
+return (
+
+  <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
+    {({ handleSubmit }) => 
+      
       <View style={{alignItems:"center", flexGrow:1, marginTop:20}} >
-        <FormikTextInput name="username" placeholder="Username" />
-        <FormikTextInput name="password" placeholder="Password" />
-        <Pressable style={styles.submitButton} onPress={onSubmit}>
+        <FormikTextInput testID="signIn-username" name="username" placeholder="Username" />
+        <FormikTextInput testID="signIn-password" name="password" placeholder="Password" />
+        <Pressable testID='signIn-submitButton' style={styles.submitButton} onPress={handleSubmit}>
           <Text style={{color:"white", fontWeight:"bold"}} >Sign In</Text>
         </Pressable>
       </View>
-    );
-  };
+
+    }
+  </Formik>
+);
+};
+
+
+
 
 const SignIn = () => {
   const [signIn] = useSignIn();
   const history = useHistory();
 
-    const onSubmit =async (values) =>{
-      const { username, password } = values;
+  const onSubmit =async (values) =>{
+    const { username, password } = values;
+    
+    try {
+      const {data} = await signIn({username, password});
+      console.log(data);
+      history?.push('/');
+      //const token = await authStorage.getAccessToken()
+      //console.log(token);
       
-      try {
-        const {data} = await signIn({username, password});
-        console.log(data);
-        history.push('/');
-        //const token = await authStorage.getAccessToken()
-        //console.log(token);
-        
-      }
-      catch(e){
-        console.log(e);
-      }
-    };
+    }
+    catch(e){
+      console.log(e);
+    }
+  };
 
   return (
 
-    <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-    </Formik>
+    <SignInContainer onSubmit={onSubmit} />
   );
 };
 

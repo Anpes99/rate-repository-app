@@ -2,15 +2,17 @@ import React from "react";
 import { View,Image, StyleSheet } from "react-native";
 import Text from "./Text";
 
-const InfoColumn = ({text, value})=>{
- value = value >= 1000 ?  String(Math.round(value/100) / 10)+"k" : value; 
+export const thousandsToKilosWithK = (value) => value >= 1000 ?  String(Math.round(value/100) / 10)+"k" : value;
+
+const InfoColumn = ({text, value, id})=>{
+ value = thousandsToKilosWithK(value);
   return(
     <View>
-      <Text style={{alignSelf:"center"}} fontWeight={"bold"} >{value}</Text>
+      <Text testID={`repositoryItem-${text}-${id}`} style={{alignSelf:"center"}} fontWeight={"bold"} >{value}</Text>
         <Text>{text}</Text>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -52,7 +54,7 @@ const RepositoryItem = ({item})=>{
 
     return(
         
-        <View style={styles.container}>
+        <View  style={styles.container}>
 
       <View style={styles.rowA} >
         <View style={styles.rowA_columnA} >
@@ -61,18 +63,18 @@ const RepositoryItem = ({item})=>{
 
         </View>
 <View style={styles.rowA_columnB} >
-  <Text fontWeight={"bold"} >{item.fullName}</Text>
-        <Text color="textSecondary" fontSize={"subheading"} >{item.description}</Text>
-       <View style={styles.textTag} ><Text  >{item.language}</Text></View>
+  <Text testID={`repositoryItem-Name-${item.id}`} fontWeight={"bold"} >{item.fullName}</Text>
+        <Text testID={`repositoryItem-Description-${item.id}`} color="textSecondary" fontSize={"subheading"} >{item.description}</Text>
+       <View testID={`repositoryItem-Language-${item.id}`} style={styles.textTag} ><Text  >{item.language}</Text></View>
         </View>
       
       </View>
 
-      <View style={styles.rowB} >
-        <InfoColumn value={item.stargazersCount} text="Stars" />
-        <InfoColumn value={item.forksCount} text="Forks"  />
-        <InfoColumn value={item.reviewCount} text="Reviews" />
-        <InfoColumn value={item.ratingAverage} text="Rating" />
+      <View   style={styles.rowB} >
+        <InfoColumn value={item.stargazersCount} text="Stars" id={item.id} />
+        <InfoColumn  value={item.forksCount} text="Forks" id={item.id} />
+        <InfoColumn  value={item.reviewCount} text="Reviews" id={item.id} />
+        <InfoColumn  value={item.ratingAverage} text="Rating" id={item.id} />
         </View>
 
 

@@ -5,15 +5,15 @@ import { useHistory } from "react-router-native";
 import { useApolloClient } from "@apollo/client";
 
 const LogOutButton = ({style})=>{
-    const authStorage = useAuthStorage()
+    const authStorage = useAuthStorage();
     const history= useHistory();
     const apolloClient = useApolloClient();
 
     const logOut = async ()=>{
         await authStorage.removeAccessToken();
         apolloClient.resetStore();
-        history.push('/')
-    }
+        history.push('/');
+    };
 
     return(<View style={style} >
         <Pressable onPress={()=>logOut()}>
@@ -21,7 +21,7 @@ const LogOutButton = ({style})=>{
                 Sign Out
             </Text>
         </Pressable>
-    </View>)
-}
+    </View>);
+};
 
 export default LogOutButton;

@@ -8,7 +8,7 @@ import Text from './Text';
 
 
 
-const FormikTextInput = ({ name, ...props }) => {
+const FormikTextInput = ({testID, name, ...props }) => {
   const [field, meta, helpers] = useField(name);	// useField has to be under Formik component to work
   const showError = meta.touched && meta.error;
 
@@ -38,6 +38,7 @@ const FormikTextInput = ({ name, ...props }) => {
 
     <View style={{width:330, margin:7}} >
       <TextInput
+        testID={testID}
       style={styles.TextInput}
         onChangeText={value => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
