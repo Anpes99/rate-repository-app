@@ -1,18 +1,12 @@
 import React from "react";
 import { View,Image, StyleSheet, Pressable } from "react-native";
 import Text from "./Text";
-import { useLazyQuery } from "@apollo/client";
-import { GET_REPOSITORY } from "../graphql/queries";
-import { useParams } from "react-router-native";
-import { useEffect, useState } from "react/cjs/react.development";
 import theme from "../theme";
 import * as WebBrowser from 'expo-web-browser';
 
 export const thousandsToKilosWithK = (value) => value >= 1000 ?  String(Math.round(value/100) / 10)+"k" : value;
 
-const openWithWebBrowser = (url)=>{
-  WebBrowser.openBrowserAsync(url);
-};
+
 
 const InfoColumn = ({text, value, id})=>{
  value = thousandsToKilosWithK(value);
@@ -22,6 +16,10 @@ const InfoColumn = ({text, value, id})=>{
         <Text>{text}</Text>
     </View>
   );
+};
+
+const openWithWebBrowser = (url)=>{
+  WebBrowser.openBrowserAsync(url);
 };
 
 const GitHubLink = ({url})=>{
@@ -34,6 +32,7 @@ const GitHubLink = ({url})=>{
   </Pressable>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 15,
@@ -85,28 +84,7 @@ justifyContent:"space-around"
 
 
 const RepositoryItem = ({item, singleView})=>{
-  const [getRepository, { data, error, loading }] = useLazyQuery(
-    GET_REPOSITORY,
-    {
-      fetchPolicy: "cache-and-network",
-      // Other options
-    }
-  );
-  const itemID = useParams().id;
-
-  useEffect(()=>{
-  if (singleView){
-    getRepository({variables: {id:itemID}});
-    
-  }
-  },[]);
-
-
-
-  if (singleView){
-    item = loading ? [] : data?.repository;
-    }
-
+ 
     return(
         
         <View  style={styles.container}>
@@ -132,8 +110,7 @@ const RepositoryItem = ({item, singleView})=>{
         <InfoColumn  value={item?.ratingAverage} text="Rating" id={item?.id} />
         </View>
 
-{singleView && <GitHubLink  url={item?.url}/>}
-
+      {singleView && <GitHubLink url={item?.url}/>}
 
         
       </View>
