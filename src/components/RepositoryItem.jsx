@@ -1,8 +1,18 @@
 import React from "react";
-import { View,Image, StyleSheet } from "react-native";
+import { View,Image, StyleSheet, Pressable } from "react-native";
 import Text from "./Text";
+import { useLazyQuery } from "@apollo/client";
+import { GET_REPOSITORY } from "../graphql/queries";
+import { useParams } from "react-router-native";
+import { useEffect, useState } from "react/cjs/react.development";
+import theme from "../theme";
+import * as WebBrowser from 'expo-web-browser';
 
 export const thousandsToKilosWithK = (value) => value >= 1000 ?  String(Math.round(value/100) / 10)+"k" : value;
+
+const openWithWebBrowser = (url)=>{
+  WebBrowser.openBrowserAsync(url);
+};
 
 const InfoColumn = ({text, value, id})=>{
  value = thousandsToKilosWithK(value);
@@ -14,6 +24,16 @@ const InfoColumn = ({text, value, id})=>{
   );
 };
 
+const GitHubLink = ({url})=>{
+
+
+  return (
+    
+    <Pressable onPress={()=>{openWithWebBrowser(url);}} style={styles.rowC}>
+    <Text style={styles.gitHubLink} >Open In Github</Text>
+  </Pressable>
+  );
+};
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 15,
@@ -37,6 +57,20 @@ const styles = StyleSheet.create({
 flexDirection:"row",
 justifyContent:"space-around"
   },
+  rowC:{
+    backgroundColor:'#3BA5F5',
+    alignItems:'center',
+    marginTop: 10,
+    borderRadius: 3
+  },
+  gitHubLink:{
+    paddingTop:15,
+    paddingBottom:15,
+    fontStyle: theme.fonts.main,
+    fontWeight: theme.fontWeights.bold,
+    fontSize: 14,
+    color: 'white'
+  },
   textTag: {
     backgroundColor: 'orange',
     padding:5,
@@ -49,8 +83,29 @@ justifyContent:"space-around"
 });
 
 
-const RepositoryItem = ({item})=>{
 
+const RepositoryItem = ({item, singleView})=>{
+  const [getRepository, { data, error, loading }] = useLazyQuery(
+    GET_REPOSITORY,
+    {
+      fetchPolicy: "cache-and-network",
+      // Other options
+    }
+  );
+  const itemID = useParams().id;
+
+  useEffect(()=>{
+  if (singleView){
+    getRepository({variables: {id:itemID}});
+    
+  }
+  },[]);
+
+
+
+  if (singleView){
+    item = loading ? [] : data?.repository;
+    }
 
     return(
         
@@ -59,28 +114,31 @@ const RepositoryItem = ({item})=>{
       <View style={styles.rowA} >
         <View style={styles.rowA_columnA} >
 
-        <Image style={{width:50, height:50, borderRadius:6}} source={{uri: item.ownerAvatarUrl}} ></Image>
+        <Image style={{width:50, height:50, borderRadius:6}} source={{uri: item?.ownerAvatarUrl}} ></Image>
 
         </View>
 <View style={styles.rowA_columnB} >
-  <Text testID={`repositoryItem-Name-${item.id}`} fontWeight={"bold"} >{item.fullName}</Text>
-        <Text testID={`repositoryItem-Description-${item.id}`} color="textSecondary" fontSize={"subheading"} >{item.description}</Text>
-       <View testID={`repositoryItem-Language-${item.id}`} style={styles.textTag} ><Text  >{item.language}</Text></View>
+  <Text testID={`repositoryItem-Name-${item?.id}`} fontWeight={"bold"} >{item?.fullName}</Text>
+        <Text testID={`repositoryItem-Description-${item?.id}`} color="textSecondary" fontSize={"subheading"} >{item?.description}</Text>
+       <View testID={`repositoryItem-Language-${item?.id}`} style={styles.textTag} ><Text  >{item?.language}</Text></View>
         </View>
       
       </View>
 
       <View   style={styles.rowB} >
-        <InfoColumn value={item.stargazersCount} text="Stars" id={item.id} />
-        <InfoColumn  value={item.forksCount} text="Forks" id={item.id} />
-        <InfoColumn  value={item.reviewCount} text="Reviews" id={item.id} />
-        <InfoColumn  value={item.ratingAverage} text="Rating" id={item.id} />
+        <InfoColumn value={item?.stargazersCount} text="Stars" id={item?.id} />
+        <InfoColumn  value={item?.forksCount} text="Forks" id={item?.id} />
+        <InfoColumn  value={item?.reviewCount} text="Reviews" id={item?.id} />
+        <InfoColumn  value={item?.ratingAverage} text="Rating" id={item?.id} />
         </View>
+
+{singleView && <GitHubLink  url={item?.url}/>}
 
 
         
       </View>
     );
+
 };
 
 export default RepositoryItem;

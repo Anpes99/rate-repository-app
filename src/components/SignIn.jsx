@@ -69,7 +69,7 @@ const SignIn = () => {
     try {
       const {data} = await signIn({username, password});
       console.log(data);
-      history?.push('/');
+      history.push('/');
       //const token = await authStorage.getAccessToken()
       //console.log(token);
       
