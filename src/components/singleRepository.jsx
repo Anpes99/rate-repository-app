@@ -118,7 +118,7 @@ console.log(review)
         <View style={styles.ReviewItemRowB} >
         <View style={styles.ReviewItemRowB_colA} ></View>
         <View style={styles.ReviewItemRowB_colB} >
-            <Text style={styles.descriptionText} >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla autem nemo, inventore repellat porro explicabo assumenda est deleniti, reiciendis voluptatem eum deserunt expedita itaque. Itaque quibusdam at neque libero et?</Text>
+            <Text style={styles.descriptionText} >{review.text}</Text>
         </View>
 
 
@@ -142,7 +142,7 @@ const SingleRepository = () => {
       useEffect(()=>{
         getReviews({variables: {id:itemID}});
       },[]);
-    const reviews= loading ? []: data?.repository.reviews.edges.map(edge=> edge.node)
+    const reviews= loading ? []: data?.repository?.reviews.edges.map(edge=> edge.node)
     return (
       <FlatList
         data={reviews}

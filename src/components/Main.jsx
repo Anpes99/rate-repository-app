@@ -4,6 +4,8 @@ import { Switch, Route, Redirect } from "react-router-native";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import SingleRepository from "./SingleRepository";
+import SubmitReview from "./SubmitReview";
+import SignUp from "./SignUp";
 
 const Main = ()=>{
 
@@ -12,6 +14,12 @@ const Main = ()=>{
         <View style={{flexDirection:'row'}} >
             
             <Switch>
+        <Route path="/createReview" >
+        <SubmitReview/>
+        </Route>
+        <Route path="/signUp" >
+        <SignUp/>
+        </Route>
         <Route path="/item/:id" >
         <SingleRepository singleView={true} />
         </Route>

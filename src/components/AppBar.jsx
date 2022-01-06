@@ -40,8 +40,10 @@ const AppBar = () => {
   return (
   <View style={styles.container}>
     <ScrollView style={styles.ScrollView} horizontal>
-      <LinkTab toDest={"/"} linkText={"repositories"}  />
-      {result.loading ? null : result.data.authorizedUser ? <LogOutButton style={styles.columnA} /> : <LinkTab toDest={"/login"} linkText={"login"}  />}
+      <LinkTab toDest={"/"} linkText={"Repositories"}  />
+      <LinkTab toDest={"/createReview"} linkText={"Create a Review"}  />
+      {result.loading ? null : result.data.authorizedUser ? <LogOutButton style={styles.columnA} /> : <><LinkTab toDest={"/login"} linkText={"login"}  /><LinkTab toDest={"/signUp"} linkText={"Sign Up"}  /></>}
+        
         </ScrollView>
     </View>);
 };
