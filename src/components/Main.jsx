@@ -6,6 +6,7 @@ import SignIn from "./SignIn";
 import SingleRepository from "./SingleRepository";
 import SubmitReview from "./SubmitReview";
 import SignUp from "./SignUp";
+import UserReviews from './UserReviews'
 
 const Main = ()=>{
 
@@ -16,6 +17,9 @@ const Main = ()=>{
             <Switch>
         <Route path="/createReview" >
         <SubmitReview/>
+        </Route>
+        <Route path="/userReviews" >
+        <UserReviews/>
         </Route>
         <Route path="/signUp" >
         <SignUp/>

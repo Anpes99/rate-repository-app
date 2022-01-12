@@ -42,6 +42,7 @@ const AppBar = () => {
     <ScrollView style={styles.ScrollView} horizontal>
       <LinkTab toDest={"/"} linkText={"Repositories"}  />
       <LinkTab toDest={"/createReview"} linkText={"Create a Review"}  />
+      <LinkTab toDest={"/userReviews"} linkText={"My Reviews"}  />
       {result.loading ? null : result.data.authorizedUser ? <LogOutButton style={styles.columnA} /> : <><LinkTab toDest={"/login"} linkText={"login"}  /><LinkTab toDest={"/signUp"} linkText={"Sign Up"}  /></>}
         
         </ScrollView>

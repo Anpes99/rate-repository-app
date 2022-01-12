@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { GET_REPOSITORIES } from "../graphql/queries";
 
-const useRepositories = () => {
+const useRepositories = (orderBy, orderDirection) => {
   const [getRepositories, { data, error, loading }] = useLazyQuery(
     GET_REPOSITORIES,
     {
@@ -11,12 +11,27 @@ const useRepositories = () => {
     }
   );
 
-  const fetchRepositories = async () => {
-    await getRepositories();
+  const fetchRepositories = async (
+    newOrderBy,
+    newOrderDirection,
+    searchKeyword
+  ) => {
+    await getRepositories({
+      variables: {
+        orderBy: newOrderBy ? newOrderBy : "CREATED_AT",
+        orderDirection: newOrderDirection ? newOrderDirection : "DESC",
+        searchKeyword,
+      },
+    });
   };
 
   useEffect(() => {
-    getRepositories();
+    getRepositories({
+      variables: {
+        orderBy: orderBy ? orderBy : "CREATED_AT",
+        orderDirection: orderDirection ? orderDirection : "DESC",
+      },
+    });
   }, []);
 
   return {
